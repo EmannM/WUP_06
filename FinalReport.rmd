@@ -32,7 +32,7 @@ To help answer this research question, we will take two hypotheses into account;
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
   
-We will be using the method of variable analysis for this report. The graphical method of a bar plot and numerical method of percent charts will be utilized to conduct this variable analysis. No data manipulations will be needed, but the inferential tools of the Chi-squared test and Fisher's exact test are going to be used.
+We will be using the method of variable analysis for this report. The graphical method of a bar plot and numerical method of percent tables will be utilized to conduct this variable analysis. No data manipulations will be needed, but the inferential tools of the Chi-squared test and Fisher's exact test are going to be used.
   
 # Results
 
@@ -43,8 +43,6 @@ We will be using the method of variable analysis for this report. The graphical 
 ### Graphical Descriptive Results
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
-  
-### Plot barplots
   
 ```{r}
 dd2 <- GSS %>% group_by(RACE, BIGBANG) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
@@ -61,12 +59,20 @@ basicCC <- ggplot(dd2,aes(x=RACE,y=prcnt*100,fill=BIGBANG))
 basicCC + geom_bar(stat="identity", position = "dodge")
 ```
   
-The bar plots above show anything but uniform beliefs in the Big Bang theory across different races. Blacks have the most extreme differences in opinion, with a whopping 80% believing that the Big Bang theory is false and only about 20% believing it is true. Whites have a completely different variation of opinion, with about half believing in the theory and half not believing in it. In the middle, other races beside black and white also have a unique variation of opinion in comparison to the other two races, with about 56% believing the Big Bang theory is true and 45% believing it is not true. We are starting to see that the belief in this theory differs among multiple races.
+The bar plots above show anything but uniform beliefs in the Big Bang theory across different races. Blacks have the most extreme differences in opinion, with a whopping 81% believing that the Big Bang theory is false and only about 19% believing it is true. Whites have a completely different variation of opinion, with half believing in the theory and half not believing in it. In the middle, other races beside black and white also have a unique variation of opinion in comparison to the other two races, with about 56% believing the Big Bang theory is true and 44% believing it is not true. We are starting to see that the belief in this theory differs among multiple races.
   
 ### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
-
+  
+```{r}
+table2 <- xtabs(~RACE + BIGBANG, data=GSS)
+rowPerc(table2)
+colPerc(table2)
+```
+  
+These percent tables show quite a significant difference between the three categories of races in this data set. Once again, we see that the numbers vary drastically among blacks, whites, and other races: most blacks (approximately 81%) do not believe the Big Bang theory is true, whites are split between believing and not believing in the theory (50% and 50%), and the "other" category contains more people who believe in the Big Bang theory (approximately 56%) than those who don't (approximately 44%).
+  
 ## Inferential Results
 
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
