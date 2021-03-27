@@ -26,7 +26,9 @@ To help answer this research question, we will take two hypotheses into account;
 # Methods
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
-
+  
+We will be using the method of variable analysis for this report. The graphical method of a bar plot and numerical method of percent charts will be utilized to conduct this variable analysis. No data manipulations will be needed, but the inferential tools of the Chi-squared test and Fisher's exact test are going to be used.
+  
 # Results
 
 <!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
