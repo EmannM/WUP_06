@@ -11,7 +11,12 @@ require(tigerstats)
 require(knitr)
 GSS <-read.csv(file="GSScsv.csv",header=TRUE)
 ```
-
+  
+```{r echo=FALSE}
+GSS$RACE <- as.factor(GSS$RACE)
+GSS$BIGBANG <- as.factor(GSS$BIGBANG)
+```
+  
 # Introduction
 
 <!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?.  If you skimp in this section expect to be marked down in your grade. Paint a picture of the project a couple of paragraphs is expected!-->
@@ -38,7 +43,26 @@ We will be using the method of variable analysis for this report. The graphical 
 ### Graphical Descriptive Results
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
+  
+### Plot barplots
+  
+```{r}
+dd2 <- GSS %>% group_by(RACE, BIGBANG) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
 
+
+# the group_by followed by summarize(count=n())
+
+basicC <- ggplot(dd2,aes(x=RACE,y=count,fill=BIGBANG))
+basicC + geom_bar(stat="identity",position="dodge")
+
+#Now for percentage plot
+
+basicCC <- ggplot(dd2,aes(x=RACE,y=prcnt*100,fill=BIGBANG)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
+  
+The bar plots above show anything but uniform beliefs in the Big Bang theory across different races. Blacks have the most extreme differences in opinion, with a whopping 80% believing that the Big Bang theory is false and only about 20% believing it is true. Whites have a completely different variation of opinion, with about half believing in the theory and half not believing in it. In the middle, other races beside black and white also have a unique variation of opinion in comparison to the other two races, with about 56% believing the Big Bang theory is true and 45% believing it is not true. We are starting to see that the belief in this theory differs among multiple races.
+  
 ### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
