@@ -18,7 +18,11 @@ GSS <-read.csv(file="GSScsv.csv",header=TRUE)
 
 Is belief in the bigbang theory (BIGBANG) independent of race (RACE)?
 If not, then whose view differs from whom??
-
+  
+In this report, we will be trying to show if there is a relationship at all between a person's race and whether or not they believe in the Big Bang theory. The data to be used comes from the GSS data set. From this data set, we will be focusing on the factor variables RACE and BIGBANG. We will be attempting to answer this research question: Is the belief in the Big Bang theory independent of race?
+  
+To help answer this research question, we will take two hypotheses into account; the null, which states that the belief in the Big Bang theory is independent of race, and the alternative, which states that the belief in the Big Bang theory is not independent of race.
+  
 # Methods
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
