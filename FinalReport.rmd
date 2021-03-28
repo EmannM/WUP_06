@@ -32,7 +32,7 @@ To help answer this research question, we will take two hypotheses into account;
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
   
-We will be using a variable analysis for this report. The graphical method of a bar plot, numerical method of percent tables, and the inferential tools of the Chi-squared test and Fisher's exact test (both normal and 2x2) will be utilized to conduct this variable analysis. 
+We will be using a variable analysis for this report. First, the two variables with which we are concerned (RACE and BIGBANG) will be converted to factor variables. Then, the graphical method of a bar plot, numerical method of percent tables, and the inferential tools of the Chi-squared test, Fisher's exact test, and the Fisher XY test will be utilized to conduct this variable analysis.  
   
 # Results
 
@@ -59,7 +59,7 @@ basicCC <- ggplot(dd2,aes(x=RACE,y=prcnt*100,fill=BIGBANG))
 basicCC + geom_bar(stat="identity", position = "dodge")
 ```
   
-The bar plots above show anything but uniform beliefs in the Big Bang theory across different races. Blacks have the most extreme differences in opinion, with a whopping 81% believing that the Big Bang theory is false and only about 19% believing it is true. Whites have a completely different variation of opinion, with half believing in the theory and half not believing in it. In the middle, other races beside black and white also have a unique variation of opinion in comparison to the other two races, with about 56% believing the Big Bang theory is true and 44% believing it is not true. We are starting to see that the belief in this theory differs among multiple races.
+The bar plots above show anything but uniform beliefs in the Big Bang theory across different races. Blacks have the most extreme differences in opinion, with a whopping 81% believing that the Big Bang theory is false and only about 19% believing it is true. Whites have a completely different variation of opinion, with half believing in the theory and half not believing in it. In the middle, other races besides black and white also have a unique variation of opinion in comparison to the other two races, with about 56% believing the Big Bang theory is true and 44% believing it is not true. We are starting to see that the belief in this theory differs among multiple races.
   
 ### Numerical Descriptive Results
 
@@ -71,7 +71,7 @@ rowPerc(table2)
 colPerc(table2)
 ```
   
-These percent tables show quite a significant difference between the three categories of races in this data set. Once again, we see that the numbers vary drastically among blacks, whites, and other races: most blacks (approximately 81%) do not believe the Big Bang theory is true, whites are split between believing and not believing in the theory (50% and 50%), and the "other" category contains more people who believe in the Big Bang theory (approximately 56%) than those who don't (approximately 44%).
+These percent tables show quite a variation between the three categories of races in this data set. Most blacks (approximately 81%) do not believe the Big Bang theory is true, whites are split between believing and not believing in the theory (50% and 50%), and the "other" category contains more people who believe in the Big Bang theory (approximately 56%) than those who don't (approximately 44%). The biggest difference in beliefs is between the blacks and the other two races.
   
 ## Inferential Results
 
@@ -87,7 +87,7 @@ The hypotheses for this analysis are as follows:
 null: The belief in the Big Bang theory is independent of race.  
 alternative: The belief in the Big Bang theory is not independent of race.  
   
-The Chi-squared test above displays a p-value of 0.01098 while Fisher's exact test displays a p-value of 0.00905. Both of these values, which represent the chance that we will get the same results just received if the null hypothesis is true, are small numbers. Because of this, we reject the null in favor of the alternative: the belief in the Big Bang theory is not independent of race. 
+The Chi-squared test above displays a p-value of 0.01098, while Fisher's exact test displays a p-value of 0.00905. Both of these values, which represent the chance that we will get the same results just received if the null hypothesis is true, are very small numbers. So, somewhere, there is a significant difference.
   
 ## A function to run multiple fisher tests  
 ### Upload the fisherXY.R function then source it
@@ -162,12 +162,15 @@ fisherXY = function(x, y, confL = 0, printAll=FALSE){
 fisherXY(GSS$RACE,GSS$BIGBANG)
 ``` 
   
-The multiple Fisher tests above begin by comparing blacks and "other." The results of the test displays a p-value of 0.02252 and a confidence interval of 1.144365 to 25.429759. This low p-value and confidence interval with no 1 in it signify that blacks and "other" are significantly different in their views on the Big Bang theory. 
+The Fisher XY test above begins by comparing blacks and "other." The results of the test display a p-value of 0.02252 and a confidence interval of 1.144365 to 25.429759. This low p-value and confidence interval with no 1.0 in between it signify that blacks and "other" are significantly different in their views on the Big Bang theory. 
   
-The next test, between black and white views, shows that they too are significantly different (even more than blacks and "other" are different) with a low p-value of 0.004628 and confidence interval of 1.418155 to 14.982411, with no 1. 
+The next test, between black and white views, shows that they too are significantly different (even more than blacks and "other" are different) with a confidence interval of 1.418155 to 14.982411 (with no 1.0 in between) and a very low p-value of 0.004628. 
   
-Once again, we have compelling evidence that the null hypothesis is to be rejected in favor of the alternative (The belief in the Big Bang theory is not independent of race.), since two pairs of compared races are significantly different in terms of views on the Big Bang theory.
+We have compelling evidence against the null hypothesis. So, we reject it in favor of the alternative (the belief in the Big Bang theory is not independent of race) since two pairs of compared races are significantly different in terms of views on the Big Bang theory.
   
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+  
+The most significant difference we see is between the blacks and the other two races, while there was no significant difference between whites and "other." We can conclude that a person's race and whether or not they believe in the Big Bang theory are not independent from each other. 
+  
