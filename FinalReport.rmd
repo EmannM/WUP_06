@@ -24,7 +24,7 @@ GSS$BIGBANG <- as.factor(GSS$BIGBANG)
 Is belief in the bigbang theory (BIGBANG) independent of race (RACE)?
 If not, then whose view differs from whom??
   
-In this report, we will be trying to show if there is a relationship at all between a person's race and whether or not they believe in the Big Bang theory. The data to be used comes from the GSS data set. From this data set, we will be focusing on the factor variables RACE and BIGBANG. We will be attempting to answer this research question: Is the belief in the Big Bang theory independent of race?
+In this report, we will be trying to show if there is a relationship at all between a person's race and whether or not they believe in the Big Bang theory. The data to be used comes from the GSS data set. From this data set, we will be focusing on the factor variables RACE (with the three levels BLACK, WHITE, and OTHER) and BIGBANG (with the two levels False and True). We will be attempting to answer this research question: Is the belief in the Big Bang theory independent of race?
   
 To help answer this research question, we will take two hypotheses into account; the null, which states that the belief in the Big Bang theory is independent of race, and the alternative, which states that the belief in the Big Bang theory is not independent of race.
   
@@ -32,7 +32,7 @@ To help answer this research question, we will take two hypotheses into account;
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
   
-We will be using the method of variable analysis for this report. The graphical method of a bar plot and numerical method of percent tables will be utilized to conduct this variable analysis. No data manipulations will be needed, but the inferential tools of the Chi-squared test and Fisher's exact test are going to be used.
+We will be using a variable analysis for this report. The graphical method of a bar plot, numerical method of percent tables, and the inferential tools of the Chi-squared test and Fisher's exact test (both normal and 2x2) will be utilized to conduct this variable analysis. 
   
 # Results
 
@@ -76,8 +76,98 @@ These percent tables show quite a significant difference between the three categ
 ## Inferential Results
 
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+  
+```{r}
+chisq.test(table2)
+chisqtestGC(table2)
+fisher.test(table2)
+```
+  
+The hypotheses for this analysis are as follows:  
+null: The belief in the Big Bang theory is independent of race.  
+alternative: The belief in the Big Bang theory is not independent of race.  
+  
+The Chi-squared test above displays a p-value of 0.01098 while Fisher's exact test displays a p-value of 0.00905. Both of these values, which represent the chance that we will get the same results just received if the null hypothesis is true, are small numbers. Because of this, we reject the null in favor of the alternative: the belief in the Big Bang theory is not independent of race. 
+  
+## A function to run multiple fisher tests  
+### Upload the fisherXY.R function then source it
 
+```{r}
+fisherXY = function(x, y, confL = 0, printAll=FALSE){
+  # Inputs: 
+  #   x: factor variable, 2 levels
+  #   y: factor variable, n levels
+  # confL: confidence level, default = 0.95
+  #        print only those tables, results if p-value < (1-confL)
+  # printAll: overide the 'print only if p-value < (1-confL), and
+  #           print all tables and fisher test results
+  #
+  # Constraint:
+  #   x and y must be same length
+  #
+  # Outputs:
+  #   All 2x2 Fisher exact tests
+  
+  if(confL<0 || confL> 1){
+    print('error: confL must be between 0 and 1')
+    return(999)
+  }
+  
+  if(!is.factor(x)) x=as.factor(x)
+  if(!is.factor(y)) y=as.factor(y)
+  
+  fisherTable = as.matrix(table(x, y))
+  cat('\ncontingency table:\n')
+  print(fisherTable)
+  cat('\n***All 2X2 tests****\n\n')
 
+  # all 2x2 tests
+  levelsY = levels(y)
+  levelsX = levels(x)
+  
+  m = length(levelsX)
+  n = length(levelsY)
+  
+  confLevel = 0.95
+  if (confL !=0 ) confLevel=confL
+  
+  for (i in 1:(m-1))
+       for(j in ((i+1):m))
+          for (k in 1:(n-1))
+             for (l in ((k+1):n)) {
+                
+                 fisherIndexX = c(i,j)
+                 fisherIndexY = c(k,l)
+                 
+                 fTempTable = as.matrix(fisherTable[fisherIndexX,
+                                        fisherIndexY])
+                 
+                 fisherTest=fisher.test(fTempTable, conf.int = TRUE, 
+                              conf.level = confLevel)
+                 
+                 if((fisherTest$p.value < (1-confLevel) ) || printAll){
+                   
+                       print(c(levelsX[i], levelsX[j]))
+                       print(c(levelsY[k], levelsY[l]))
+                       print(fTempTable)
+                       print(fisherTest)
+                       cat('\n')
+                 }
+                 
+        }
+}
+
+```
+```{r}
+fisherXY(GSS$RACE,GSS$BIGBANG)
+``` 
+  
+The multiple Fisher tests above begin by comparing blacks and "other." The results of the test displays a p-value of 0.02252 and a confidence interval of 1.144365 to 25.429759. This low p-value and confidence interval with no 1 in it signify that blacks and "other" are significantly different in their views on the Big Bang theory. 
+  
+The next test, between black and white views, shows that they too are significantly different (even more than blacks and "other" are different) with a low p-value of 0.004628 and confidence interval of 1.418155 to 14.982411, with no 1. 
+  
+Once again, we have compelling evidence that the null hypothesis is to be rejected in favor of the alternative (The belief in the Big Bang theory is not independent of race.), since two pairs of compared races are significantly different in terms of views on the Big Bang theory.
+  
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
